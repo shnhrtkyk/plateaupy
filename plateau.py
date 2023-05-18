@@ -1,7 +1,7 @@
 import plateaupy  
 import pprint
 
-path = "/home/map4/Downloads/23100_nagoya-shi_2020_citygml_4_op"
+path = "path-to-PLATEAU/23100_nagoya-shi_2020_citygml_4_op"
 pl = plateaupy.plparser(paths=[path])  
 pl.loadFiles()
 
