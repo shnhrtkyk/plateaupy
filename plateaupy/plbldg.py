@@ -28,6 +28,7 @@ class Building:
 		self.extendedAttribute = dict()
 
 		self.lod0RoofEdge = []
+		self.lod0FootPrint = []
 		self.lod1Solid = []
 
 		#self.lod2Solid = []
@@ -61,7 +62,21 @@ attr={}'\
 			if len(res) > 0:
 				triangles = np.array(res).reshape((-1,3))
 		return vertices, triangles
-
+	def getLOD0Footprintpolygons(self, height=None):
+		vertices = None
+		triangles = None
+		if len(self.lod0FootPrint) > 0:
+			vertices = []
+			for x in self.lod0FootPrint[0]:
+				xx = copy.deepcopy(x)
+				if height is not None:
+					xx[2] = height
+				vertices.append( convertPolarToCartsian( *xx ) )
+			vertices = np.array(vertices)
+			res = earcut(np.array(vertices,dtype=np.int).flatten(), dim=3)
+			if len(res) > 0:
+				triangles = np.array(res).reshape((-1,3))
+		return vertices, triangles
 class appParameterizedTexture:
 	def __init__(self):
 		self.imageURI = None
@@ -152,6 +167,9 @@ class plbldg(plobj):
 			# lod0RoofEdge
 			vals = bld.xpath('bldg:lod0RoofEdge/gml:MultiSurface/gml:surfaceMember/gml:Polygon/gml:exterior/gml:LinearRing/gml:posList', namespaces=nsmap)
 			b.lod0RoofEdge = [str2floats(v).reshape((-1,3)) for v in vals]
+			# lod0FootPrint
+			vals = bld.xpath('bldg:lod0FootPrint/gml:MultiSurface/gml:surfaceMember/gml:Polygon/gml:exterior/gml:LinearRing/gml:posList', namespaces=nsmap)
+			b.lod0FootPrint = [str2floats(v).reshape((-1,3)) for v in vals]
 			# lod1Solid
 			vals = bld.xpath('bldg:lod1Solid/gml:Solid/gml:exterior/gml:CompositeSurface/gml:surfaceMember/gml:Polygon/gml:exterior/gml:LinearRing/gml:posList', namespaces=nsmap)
 			b.lod1Solid = [str2floats(v).reshape((-1,3)) for v in vals]

@@ -66,7 +66,7 @@ class plparser:
 	@param kind:		specify the type of gml, plobj.ALL, plobj.BLDG,..
 	@param location:	specify which gml data in the type are loaded, -1:all, <1000:array index, >=1000:location
 	'''
-	def loadFiles(self, bLoadCache=False, cachedir='cached', kind=None, location=-1, options=ploptions()):
+	def loadFiles(self, bLoadCache=False, cachedir='cached', kind=plobj.BLDG, location=-1, options=ploptions()):
 		if kind is None:
 			kind = plobj.ALL
 		if cachedir is not None:
